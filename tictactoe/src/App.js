@@ -1,16 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
+import TicTacToe from './TicTacToe';
 import './App.css';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <div className="App-header">
-          <h2>Welcome to TicTacToe</h2>
-        </div>
-      </div>
-    );
-  }
+const App = () => {
+  return (
+    <div className="App">
+      <TicTacToe />
+    </div>
+  );
 }
+
 
 export default App;
