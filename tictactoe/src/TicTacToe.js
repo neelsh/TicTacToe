@@ -2,56 +2,29 @@ import React from 'react';
 import './TicTacToe.css';
 
 
-function Square(props) {
-  return (
-    <button className="square" onClick={props.onClick}>
-      {props.value}
-    </button>
-  );
+export class Square extends React.Component {
+  render() {
+    return (
+      <button className="square" id={this.props.index} onClick={() => this.props.onClick()}>
+        { this.props.value }
+      </button>
+    );
+  }
 }
 
-class Board extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      squares: Array(9).fill(null),
-      xIsNext: true,
-    };
-  }
-
-  handleClick(i) {
-    const squares = this.state.squares.slice();
-    if (calculateWinner(squares) || squares[i]) {
-      return;
-    }
-    squares[i] = this.state.xIsNext ? 'X' : 'O';
-    this.setState({
-      squares: squares,
-      xIsNext: !this.state.xIsNext,
-    });
-  }
+export class Board extends React.Component {
 
   renderSquare(i) {
-    return (
-      <Square
-        value={this.state.squares[i]}
-        onClick={() => this.handleClick(i)}
-      />
-    );
+    return <Square
+    value={this.props.squares[i]}
+    onClick={() => this.props.handleClick(i)}
+    index={i}
+    />;
   }
 
   render() {
-    const winner = calculateWinner(this.state.squares);
-    let status;
-    if (winner) {
-      status = 'Winner: ' + winner;
-    } else {
-      status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
-    }
-
     return (
       <div>
-        <div className="status">{status}</div>
         <div className="board-row">
           {this.renderSquare(0)}
           {this.renderSquare(1)}
@@ -72,36 +45,92 @@ class Board extends React.Component {
   }
 }
 
+
 class Game extends React.Component {
+  constructor(props) {
+    super();
+    this.state = {
+      whoMoves: "X",
+      squares: props.squares,
+      winner: null
+    };
+  }
+
+  handleClick(i) {
+    if (this.state.winner) {
+      this.setState({errorMessage: "Game finished"});
+      return
+    }
+
+    const newSquares = this.state.squares.slice();
+    const currentPlayer = this.state.whoMoves;
+    newSquares[i] = currentPlayer;
+    const nextPlayer = (currentPlayer === "X") ? "O" : "X";
+
+    const winner = this.calculateWinner(newSquares);
+
+    if (this.state.winner !== winner && winner !== null) {
+      this.roundFinished(winner);
+    }
+    this.setState({squares: newSquares, whoMoves: nextPlayer});
+  }
+
+
+  roundFinished(winner) {
+
+    this.setState({
+      winner: winner
+    })
+  }
+
+  nextRound() {
+    this.setState({
+      squares: Array(9).fill(null),
+      errorMessage: null,
+      winner: null
+    })
+  }
+
+  calculateWinner(squares) {
+    const lines = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+    for (let i = 0; i < lines.length; i++) {
+      const [a, b, c] = lines[i];
+      if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+        return squares[a];
+      }
+    }
+    return null;
+  }
+
   render() {
+
+    let {whoMoves, squares, errorMessage, winner} = this.state
+
     return (
       <div className="game">
-        <div className="game-board">
-          <Board />
+        <div className="round">
+          <div className="messages">
+            <div className="winner">Winner: {winner}</div>
+            <div className="nextPlayer">Next player: {whoMoves}</div>
+          </div>
+          <div className="game-board">
+            <Board squares={squares} handleClick={(i)=> this.handleClick(i)}/>
+          </div>
         </div>
       </div>
     );
   }
 }
+Game.defaultProps = { squares: Array(9).fill(null) };
 
-function calculateWinner(squares) {
-  const lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
-  for (let i = 0; i < lines.length; i++) {
-    const [a, b, c] = lines[i];
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
-    }
-  }
-  return null;
-}
 
 export default Game;

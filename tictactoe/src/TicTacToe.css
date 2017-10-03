@@ -1,34 +1,26 @@
-body {
-  font: 14px "Century Gothic", Futura, sans-serif;
-  margin: 20px;
-}
-
-.board-row:after {
-  clear: both;
-  content: "";
+.board-row {
   display: table;
 }
 
-.status {
+.winner, .nextPlayer {
   margin-bottom: 10px;
-  text-decoration: underline;
   text-align: center;
-  font-size: 25px;
+  font-size: 20px;
 }
 
 .square {
   background: #fff;
   border: 1px solid #999;
   float: left;
-  font-size: 24px;
+  font-size: 25px;
   font-weight: bold;
   line-height: 34px;
-  height: 65px;
+  height: 67px;
   margin-right: -1px;
   margin-top: -1px;
   padding: 0;
   text-align: center;
-  width: 65px;
+  width: 67px;
 }
 
 .square:focus {
@@ -48,7 +40,7 @@ body {
   flex-direction: row;
 }
 
-.game-board {
+.round {
   margin: auto;
 }
 
