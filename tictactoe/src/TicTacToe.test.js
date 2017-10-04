@@ -46,108 +46,113 @@ describe('TicTacToe game', () => {
     expect(game.find('.nextPlayer').text()).toEqual("Next player: O");
   });
 
-  it('should allow the winning combination 1', () => {
-    const boardValues =
-    ["X", "X", null,
-    null, "O", "O",
-    null, null, null];
-
-    const game = mount(
-      <Game squares={boardValues}/>
-    );
-    game.find('button#2').simulate('click');
-     expect(game.find('.winner').text()).toEqual("Winner: X");
-  });
-
-  it('should allow the winning combination 2', () => {
-    const boardValues =
-    ["O", "O", null,
-    "X", "X", null,
-    null, null, null];
-
-    const game = mount(
-      <Game squares={boardValues}/>
-    );
-    game.find('button#5').simulate('click');
-     expect(game.find('.winner').text()).toEqual("Winner: X");
-  });
-
-  it('should allow the winning combination 3', () => {
-    const boardValues =
-    ["O", "O", null,
-    null, null, null,
-    "X", "X", null];
-
-    const game = mount(
-      <Game squares={boardValues}/>
-    );
-    game.find('button#8').simulate('click');
-     expect(game.find('.winner').text()).toEqual("Winner: X");
-  });
-
-  it('should allow the winning combination 4', () => {
-    const boardValues =
-    ["X", "O", null,
-    "X", null, null,
-    null, "O", null];
-
-    const game = mount(
-      <Game squares={boardValues}/>
-    );
-    game.find('button#6').simulate('click');
-     expect(game.find('.winner').text()).toEqual("Winner: X");
-  });
-
-  it('should allow the winning combination 5', () => {
-    const boardValues =
-    ["O", "X", null,
-    "O", "X", null,
-    null, null, null];
-
-    const game = mount(
-      <Game squares={boardValues}/>
-    );
-    game.find('button#7').simulate('click');
-     expect(game.find('.winner').text()).toEqual("Winner: X");
-  });
-
-  it('should allow the winning combination 6', () => {
-    const boardValues =
-    [null, "O", "X",
-    null, "O", "X",
-    null, null, null];
-
-    const game = mount(
-      <Game squares={boardValues}/>
-    );
-    game.find('button#8').simulate('click');
-     expect(game.find('.winner').text()).toEqual("Winner: X");
-  });
-
-  it('should allow the winning combination 7', () => {
+  it('can simulate a click on a square', () => {
     const boardValues =
     ["X", "O", "O",
     null, "X", null,
     null, null, null];
 
     const game = mount(
-      <Game squares={boardValues}/>
-    );
-    game.find('button#8').simulate('click');
-     expect(game.find('.winner').text()).toEqual("Winner: X");
+    <Game squares={boardValues}/>
+  );
+  game.find('button#8').simulate('click');
+  expect(game.find('.winner').text()).toEqual("Winner: X");
+  })
+
+  it('should allow the winning combination 1', () => {
+    const game = mount(<Game squares={[]}/>);
+
+    const board = [
+      "X", "X", "X",
+      null, "O", "O",
+      null, null, null
+    ];
+
+    expect(game.instance().calculateWinner(board)).toEqual('X')
+  });
+
+  it('should allow the winning combination 2', () => {
+    const game = mount(<Game squares={[]}/>);
+
+    const board = [
+      null, "O", "O",
+      "X", "X", "X",
+      null, null, null
+    ];
+
+    expect(game.instance().calculateWinner(board)).toEqual('X')
+  });
+
+  it('should allow the winning combination 3', () => {
+    const game = mount(<Game squares={[]}/>);
+
+    const board = [
+      null, null, null,
+      null, "O", "O",
+      "X", "X", "X"
+    ];
+
+    expect(game.instance().calculateWinner(board)).toEqual('X')
+  });
+
+  it('should allow the winning combination 4', () => {
+    const game = mount(<Game squares={[]}/>);
+
+    const board = [
+      "X", null, null,
+      "X", "O", "O",
+      "X", null, null
+    ];
+
+    expect(game.instance().calculateWinner(board)).toEqual('X')
+  });
+
+  it('should allow the winning combination 5', () => {
+    const game = mount(<Game squares={[]}/>);
+
+    const board = [
+      null, "X", null,
+      null, "X", "O",
+      null, "X", "O"
+    ];
+
+    expect(game.instance().calculateWinner(board)).toEqual('X')
+  });
+
+  it('should allow the winning combination 6', () => {
+    const game = mount(<Game squares={[]}/>);
+
+    const board = [
+      null, "O", "X",
+      null, "O", "X",
+      null, null, "X"
+    ];
+
+    expect(game.instance().calculateWinner(board)).toEqual('X')
+  });
+
+  it('should allow the winning combination 7', () => {
+    const game = mount(<Game squares={[]}/>);
+
+    const board = [
+      "X", "O", null,
+      null, "X", null,
+      null, "O", "X"
+    ];
+
+    expect(game.instance().calculateWinner(board)).toEqual('X')
   });
 
   it('should allow the winning combination 8', () => {
-    const boardValues =
-    ["O", "O", "X",
-    null, "X", null,
-    null, null, null];
+    const game = mount(<Game squares={[]}/>);
 
-    const game = mount(
-      <Game squares={boardValues}/>
-    );
-    game.find('button#6').simulate('click');
-     expect(game.find('.winner').text()).toEqual("Winner: X");
+    const board = [
+      null, "O", "X",
+      null, "X", null,
+      "X", "O", null
+    ];
+
+    expect(game.instance().calculateWinner(board)).toEqual('X')
   });
 
 })
